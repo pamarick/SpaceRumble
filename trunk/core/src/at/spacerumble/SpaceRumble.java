@@ -17,7 +17,6 @@ import at.spacerumble.threads.UpdateThread;
 
 public class SpaceRumble extends ApplicationAdapter implements ControllerListener {
 
-  // test
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
 
