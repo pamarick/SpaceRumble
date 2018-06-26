@@ -20,8 +20,6 @@ public class SpaceShip extends Sprite {
 
   private final Body body;
 
-  float torque = 0.0f;
-
   boolean drawSprite = true;
 
   final float PIXELS_TO_METERS = 100f;
@@ -53,7 +51,6 @@ public class SpaceShip extends Sprite {
   }
 
   public void update(float dt) {
-    body.applyTorque(torque, true);
 
     if (boost) {
       body.applyForceToCenter(getBoostVelocity(0.1f), true);

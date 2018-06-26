@@ -16,6 +16,7 @@ import at.spacerumble.SpaceRumble;
 import at.spacerumble.players.Player;
 import at.spacerumble.players.PlayerManager;
 import at.spacerumble.sprites.SpaceShip;
+import at.spacerumble.sprites.SpaceShip2;
 
 public class MenuState extends State {
 
@@ -26,6 +27,8 @@ public class MenuState extends State {
 
   private final World world;
 
+  SpaceShip2 spaceShip2;
+  
   public MenuState(GameStateManager gsm, int counter) {
     super(gsm);
     this.counter = counter;
@@ -51,6 +54,8 @@ public class MenuState extends State {
     // playerManager.get("Player2").setSpaceShip(new SpaceShip(Color.WHITE, 0, 360));
     // playerManager.get("Player3").setSpaceShip(new SpaceShip(Color.GREEN, 640, 0));
     // playerManager.get("Player4").setSpaceShip(new SpaceShip(Color.PINK, 640, 360));
+    
+    spaceShip2 = new SpaceShip2(world);
   }
 
   @Override
@@ -78,6 +83,7 @@ public class MenuState extends State {
       sb.draw(player.getSpaceShip(), player.getSpaceShip().getX(), player.getSpaceShip().getY(), player.getSpaceShip().getOriginX(), player.getSpaceShip().getOriginY(), player.getSpaceShip().getWidth(), player.getSpaceShip().getHeight(),
           player.getSpaceShip().getScaleX(), player.getSpaceShip().getScaleY(), player.getSpaceShip().getRotation());
     }
+    spaceShip2.draw(sb);
     sb.end();
   }
 
@@ -341,5 +347,4 @@ public class MenuState extends State {
     // TODO Auto-generated method stub
     return false;
   }
-
 }
