@@ -46,7 +46,7 @@ public class SpaceShip extends Sprite {
     shape.setAsBox(this.getWidth() / 2 / PIXELS_TO_METERS, this.getHeight() / 2 / PIXELS_TO_METERS);
     fixtureDef = new FixtureDef();
     fixtureDef.shape = shape;
-    fixtureDef.density = 1f;
+    fixtureDef.density = 0.5f;
     body.createFixture(fixtureDef);
     shape.dispose();
 
@@ -62,16 +62,16 @@ public class SpaceShip extends Sprite {
       body.applyForceToCenter(getBoostVelocity(0.1f), true);
     }
     if (right) {
-      body.setAngularVelocity(-1);
+      body.setAngularVelocity(-5);
     } else if (left) {
-      body.setAngularVelocity(1);
+      body.setAngularVelocity(5);
     } else {
       body.setAngularVelocity(0);
     }
 
     this.setPosition((body.getPosition().x * PIXELS_TO_METERS) - this.getWidth() / 2, (body.getPosition().y * PIXELS_TO_METERS) - this.getHeight() / 2);
     this.setRotation((float) Math.toDegrees(body.getAngle()));
-  }
+ }
 
   public void startBoost() {
     boost = true;
