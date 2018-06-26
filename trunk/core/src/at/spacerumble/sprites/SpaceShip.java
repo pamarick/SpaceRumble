@@ -20,8 +20,6 @@ public class SpaceShip extends Sprite {
 
   private final Body body;
 
-  private final World world;
-
   float torque = 0.0f;
 
   boolean drawSprite = true;
@@ -32,7 +30,6 @@ public class SpaceShip extends Sprite {
 
   public SpaceShip(Color color, float x, float y, World world) {
     super(ship);
-    this.world = world;
     this.setSize(15, 30);
     this.setOriginCenter();
     this.setRotation(0f);

@@ -1,10 +1,6 @@
 package at.spacerumble.gamepads;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics.GraphicsType;
-import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.utils.SharedLibraryLoader;
 
 public class XboxGamepad extends Gamepad {
 	static {
@@ -29,18 +25,11 @@ public class XboxGamepad extends Gamepad {
 		D_RIGHTDOWN = PovDirection.southWest;
 		D_CENTER = PovDirection.center;
 		
-
 		AXIS_LEFT_Y = 0;
 		AXIS_LEFT_X = 1;
 		AXIS_RIGHT_Y = 2;
 		AXIS_RIGHT_X = 3;
 		L3 = 4;
 		R3 = 4;
-	
-	}
-	
-	public static boolean isXboxController(Controller controller) {
-		String controllerName = controller.getName().toLowerCase();
-		return (controllerName.contains("xbox") || controllerName.contains("x-box"));
 	}
 }

@@ -24,8 +24,6 @@ public class MenuState extends State {
 
   private final PlayerManager playerManager;
 
-  private SpaceShip spaceShip;
-
   private final World world;
 
   public MenuState(GameStateManager gsm, int counter) {

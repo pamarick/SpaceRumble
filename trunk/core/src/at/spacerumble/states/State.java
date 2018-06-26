@@ -1,7 +1,9 @@
 package at.spacerumble.states;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -19,6 +21,8 @@ public abstract class State implements ControllerListener, InputProcessor {
     cam = new OrthographicCamera();
     mouse = new Vector3();
     endState = false;
+	Controllers.addListener(this);
+	Gdx.input.setInputProcessor(this);
   }
 
   protected abstract void handleInput();

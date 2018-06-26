@@ -1,7 +1,6 @@
 package at.spacerumble.players;
 
 import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import at.spacerumble.sprites.SpaceShip;
