@@ -3,73 +3,110 @@ package at.spacerumble.sprites;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class SpaceShip extends Sprite {
 
-	private static Texture ship = new Texture("yellowship.png");
+  private static Texture ship = new Texture("yellowship.png");
 
-	private Vector2 velocity;
+  private final BodyDef bodyDef;
 
-	public SpaceShip(Color color, float x, float y) {
-		super(ship);
-		this.setSize(15, 30);
-		this.setOriginCenter();
-		this.setRotation(0f);
-		this.setColor(color);
-		this.setPosition(x, y);
-		velocity = new Vector2(0, 0);
-	}
+  private final FixtureDef fixtureDef;
 
-	public void update(float dt) {
-		this.setPosition(this.getX() + velocity.x, this.getY() + velocity.y);
-	}
+  private final Body body;
 
-	public void boost() {
-		System.out.println("rotation: " + this.getRotation());
+  private final World world;
 
-		float to360 = this.getRotation() - ((int) (this.getRotation() / 360f) * 360f);
-		
-		System.out.println("to360: " + to360);
-		
-		if (to360 < 0)
-			to360 = 360 + to360;
+  float torque = 0.0f;
 
-		int quadrant = (int) (to360 / 90f);
-		float factor = 1 - (to360 - (90f * quadrant)) / 90f;
-		
-		if (quadrant == 0) { // 0 bis 89.9 Grad
-			velocity.y = velocity.y + factor * 1f;
-			velocity.x = velocity.x - (1 - factor) * 1f;
-		}
-		if (quadrant == 1) { // 90 bis 179.9 Grad
-			velocity.y = velocity.y - (1 - factor) * 1f;
-			velocity.x = velocity.x - factor * 1f;
-		}
-		if (quadrant == 2) { // 180 bis 269.9 Grad
-			velocity.y = velocity.y - factor * 1f;
-			velocity.x = velocity.x + (1 - factor) * 1f;
-		}
-		if (quadrant == 3) { // 270 bis 359.9 Grad
-			velocity.y = velocity.y + (1 - factor) * 1f;
-			velocity.x = velocity.x + factor * 1f;
-		}
+  boolean drawSprite = true;
 
-		System.out.println("degree: " + to360 + ", rotation: " + this.getRotation());
-	}
+  final float PIXELS_TO_METERS = 100f;
 
-	public void left() {
-		this.setRotation(this.getRotation() + 15);
-	}
+  boolean boost, left, right;
 
-	public void right() {
-		this.setRotation(this.getRotation() - 15);
-	}
+  public SpaceShip(Color color, float x, float y, World world) {
+    super(ship);
+    this.world = world;
+    this.setSize(15, 30);
+    this.setOriginCenter();
+    this.setRotation(0f);
+    this.setColor(color);
+    this.setPosition(x, y);
+    bodyDef = new BodyDef();
+    bodyDef.type = BodyDef.BodyType.DynamicBody;
+    bodyDef.position.set((this.getX() + this.getWidth() / 2) / PIXELS_TO_METERS, (this.getY() + this.getHeight() / 2) / PIXELS_TO_METERS);
+    body = world.createBody(bodyDef);
+    PolygonShape shape = new PolygonShape();
+    shape.setAsBox(this.getWidth() / 2 / PIXELS_TO_METERS, this.getHeight() / 2 / PIXELS_TO_METERS);
+    fixtureDef = new FixtureDef();
+    fixtureDef.shape = shape;
+    fixtureDef.density = 1f;
+    body.createFixture(fixtureDef);
+    shape.dispose();
 
-	public void stop() {
-		velocity.x = 0;
-		velocity.y = 0;
-	}
+    boost = false;
+    left = false;
+    right = false;
+  }
+
+  public void update(float dt) {
+    body.applyTorque(torque, true);
+
+    if (boost) {
+      body.applyForceToCenter(getBoostVelocity(0.1f), true);
+    }
+    if (right) {
+      body.setAngularVelocity(-1);
+    } else if (left) {
+      body.setAngularVelocity(1);
+    } else {
+      body.setAngularVelocity(0);
+    }
+
+    this.setPosition((body.getPosition().x * PIXELS_TO_METERS) - this.getWidth() / 2, (body.getPosition().y * PIXELS_TO_METERS) - this.getHeight() / 2);
+    this.setRotation((float) Math.toDegrees(body.getAngle()));
+  }
+
+  public void startBoost() {
+    boost = true;
+  }
+
+  public void endBoost() {
+    boost = false;
+  }
+
+  public void down() {
+    body.setLinearVelocity(0f, 0f);
+    body.setAngularVelocity(0f);
+  }
+
+  public void startLeft() {
+    left = true;
+  }
+
+  public void endLeft() {
+    left = false;
+  }
+
+  public void startRight() {
+    right = true;
+  }
+
+  public void endRight() {
+    right = false;
+  }
+
+  private Vector2 getBoostVelocity(float force) {
+    Vector2 v = new Vector2();
+    v.x = (float) (force * Math.cos(body.getAngle() + Math.PI / 2));
+    v.y = (float) (force * Math.sin(body.getAngle() + Math.PI / 2));
+    return v;
+  }
 
 }

@@ -2,6 +2,7 @@ package at.spacerumble;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -15,7 +16,7 @@ import at.spacerumble.states.MenuState;
 import at.spacerumble.threads.HandleInputThread;
 import at.spacerumble.threads.UpdateThread;
 
-public class SpaceRumble extends ApplicationAdapter implements ControllerListener {
+public class SpaceRumble extends ApplicationAdapter implements ControllerListener, InputProcessor {
 
   public static final int WIDTH = 1280;
   public static final int HEIGHT = 720;
@@ -37,24 +38,20 @@ public class SpaceRumble extends ApplicationAdapter implements ControllerListene
     updateThread = new UpdateThread(gsm, Gdx.graphics.getDeltaTime());
     Gdx.gl.glClearColor(0, 0, 0, 0);
     Controllers.addListener(this);
+    Gdx.input.setInputProcessor(this);
     gsm.push(new MenuState(gsm, 0));
   }
 
   @Override
   public void render() {
 
-    (handleInputThread = new HandleInputThread(gsm)).start();
-    (updateThread = new UpdateThread(gsm, Gdx.graphics.getDeltaTime())).start();
+    gsm.handleInput();
+    gsm.update(Gdx.graphics.getDeltaTime());
 
+    Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     gsm.render(batch);
 
-    try {
-      handleInputThread.join();
-      updateThread.join();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
   }
 
   @Override
@@ -106,5 +103,45 @@ public class SpaceRumble extends ApplicationAdapter implements ControllerListene
   @Override
   public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
     return gsm.accelerometerMoved(controller, accelerometerCode, value);
+  }
+
+  @Override
+  public boolean keyDown(int keycode) {
+    return gsm.keyDown(keycode);
+  }
+
+  @Override
+  public boolean keyUp(int keycode) {
+    return gsm.keyUp(keycode);
+  }
+
+  @Override
+  public boolean keyTyped(char character) {
+    return gsm.keyTyped(character);
+  }
+
+  @Override
+  public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    return gsm.touchDown(screenX, screenY, pointer, button);
+  }
+
+  @Override
+  public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    return gsm.touchUp(screenX, screenY, pointer, button);
+  }
+
+  @Override
+  public boolean touchDragged(int screenX, int screenY, int pointer) {
+    return gsm.touchDragged(screenX, screenY, pointer);
+  }
+
+  @Override
+  public boolean mouseMoved(int screenX, int screenY) {
+    return gsm.mouseMoved(screenX, screenY);
+  }
+
+  @Override
+  public boolean scrolled(int amount) {
+    return gsm.scrolled(amount);
   }
 }
