@@ -76,12 +76,4 @@ public class PlayerManager {
 	public void removePlayer(Player player) {
 		playerManager.remove(player);
 	}
-
-	@Override
-	public String toString() {
-		String string = "";
-		for (Player player : playerManager)
-			string += player.toString() + "\n";
-		return string;
-	}
 }

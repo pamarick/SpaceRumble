@@ -17,39 +17,37 @@ public abstract class GameObject {
 	protected Texture texture;
 	protected Sprite sprite;
 	protected Body body;
+	protected FixtureDef fixtureDef;
+	protected BodyDef bodyDef;
 
 	protected GameObject(Texture texture, World world) {
-		 super();
-		 this.texture = texture;
-		 sprite = new Sprite(texture);
-		 sprite.setOriginCenter();
-		 sprite.setRotation(0f);
-		 sprite.setColor(Color.BLACK);
-		 sprite.setPosition(-1000, -1000);
-		
-		 BodyDef bodyDef = new BodyDef();
-		 bodyDef.type = BodyDef.BodyType.DynamicBody;
-		 bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) /
-		 PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) /
-		 PIXELS_TO_METERS);
-		
-		 PolygonShape shape = new PolygonShape();
-		 shape.setAsBox(sprite.getWidth() / 2 / PIXELS_TO_METERS, sprite.getHeight() /
-		 2 / PIXELS_TO_METERS);
-		
-		 FixtureDef fixtureDef = new FixtureDef();
-		 fixtureDef.shape = shape;
-		 fixtureDef.density = 0.5f;
-		
-		 body = world.createBody(bodyDef);
-		 body.createFixture(fixtureDef);
-		 
-		 shape.dispose();
+		super();
+		this.texture = texture;
+		sprite = new Sprite(texture);
+		sprite.setSize(15, 30);
+		sprite.setOriginCenter();
+		sprite.setRotation(0f);
+		sprite.setColor(Color.RED);
+		sprite.setPosition(100, 100);
+		bodyDef = new BodyDef();
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS,
+				(sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
+		body = world.createBody(bodyDef);
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_TO_METERS, sprite.getHeight() / 2 / PIXELS_TO_METERS);
+		fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.density = 0.5f;
+		body.createFixture(fixtureDef);
+		shape.dispose();
 	}
 
 	public void draw(SpriteBatch sb) {
 		sb.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(),
 				sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
+		System.out.println("position:" + body.getPosition());
+		System.out.println("position:" + sprite.getX() + ", " + sprite.getY());
 	};
 
 	public void dispose() {

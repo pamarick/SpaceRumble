@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class SpaceShip extends Sprite {
+public class SpaceShipOld extends Sprite {
 
   private static Texture ship = new Texture("yellowship.png");
 
@@ -26,7 +26,7 @@ public class SpaceShip extends Sprite {
 
   boolean boost, left, right;
 
-  public SpaceShip(Color color, float x, float y, World world) {
+  public SpaceShipOld(Color color, float x, float y, World world) {
     super(ship);
     this.setSize(15, 30);
     this.setOriginCenter();

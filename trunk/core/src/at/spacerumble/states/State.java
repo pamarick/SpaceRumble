@@ -14,7 +14,7 @@ public abstract class State implements ControllerListener, InputProcessor {
   protected Vector3 mouse;
   protected GameStateManager gsm;
 
-  protected boolean endState;
+  private boolean endState;
 
   protected State(GameStateManager gsm) {
     this.gsm = gsm;
@@ -37,4 +37,7 @@ public abstract class State implements ControllerListener, InputProcessor {
     }
   };
 
+  protected void endState() {
+	  endState=true;
+  }
 }
