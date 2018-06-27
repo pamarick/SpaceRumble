@@ -2,8 +2,6 @@ package at.spacerumble.players;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 
 import at.spacerumble.objects.SpaceShip;
 
@@ -17,7 +15,7 @@ public class Player {
 	public Player(String name) {
 		this.name = name;
 		this.gamepad = null;
-		this.spaceShip = new SpaceShip(new World(new Vector2(0, 0), true));
+		this.spaceShip = null;
 	}
 	
 	public String getName() {

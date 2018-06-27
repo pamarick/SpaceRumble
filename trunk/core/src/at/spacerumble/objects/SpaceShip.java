@@ -2,24 +2,15 @@ package at.spacerumble.objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class SpaceShip extends GameObject {
 
 	private boolean boost, left, right;
-
-	public SpaceShip(World world) {
-		super(new Texture("yellowship.png"), world);
-		sprite.setPosition(400, 400);
-		//sprite.setSize(15, 30);
-		boost = left = right = false;
-	}
-
+	
 	public SpaceShip(World world, float x, float y) {
-		super(new Texture("yellowship.png"), world);
-		sprite.setPosition(x, y);
-		//sprite.setSize(15, 30);
+		super(new Texture("yellowship.png"), world, 15, 30);
+		setPosition(500, 500);
 		boost = left = right = false;
 	}
 
@@ -44,8 +35,8 @@ public class SpaceShip extends GameObject {
 
 		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2,
 				(body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
-		System.out.println("position:" + body.getPosition());
-		System.out.println("position:" + sprite.getX() + ", " + sprite.getY());
+		System.out.println("bPosition: " + body.getPosition());
+		System.out.println("%: " + sprite.getX() / body.getPosition().x);
 		sprite.setRotation((float) Math.toDegrees(body.getAngle()));
 	}
 
@@ -76,6 +67,12 @@ public class SpaceShip extends GameObject {
 
 	public void setRight(boolean right) {
 		this.right = right;
+	}
+
+	public void setPosition(final float x, final float y) {
+		float rx = (x + (sprite.getWidth() / 2)) / PIXELS_TO_METERS;
+		float ry = (y + (sprite.getHeight() / 2)) / PIXELS_TO_METERS;
+		body.setTransform(rx, ry, body.getAngle());
 	}
 
 }

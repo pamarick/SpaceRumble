@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -19,14 +18,11 @@ import at.spacerumble.players.PlayerManager;
 
 public class MenuState extends State {
 
+	private final PlayerManager playerManager;
+	private final World world;
+	
 	private final BitmapFont font;
 	private final int counter;
-
-	private final PlayerManager playerManager;
-
-	private final World world;
-
-	private SpaceShip spaceShip;
 
 	public MenuState(GameStateManager gsm, int counter) {
 		super(gsm);
@@ -41,10 +37,9 @@ public class MenuState extends State {
 
 		playerManager = new PlayerManager();
 		playerManager.addPlayer("Player1");
-		playerManager.addGamepads(Controllers.getControllers());
 		playerManager.get("Player1").setSpaceShip(new SpaceShip(world, 640, 360));
-
-		spaceShip = new SpaceShip(world, 800, 800);
+		
+		playerManager.addGamepads(Controllers.getControllers());
 	}
 
 	@Override
@@ -57,10 +52,7 @@ public class MenuState extends State {
 	@Override
 	public void update(float dt) {
 		world.step(dt, 6, 2);
-		for (Player player : playerManager.getAll()) {
-			player.update(dt);
-		}
-		//spaceShip.update(dt);
+		playerManager.getAll().forEach(player -> player.update(dt));
 	}
 
 	@Override
@@ -69,11 +61,7 @@ public class MenuState extends State {
 		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
 		font.draw(sb, "SpaceRumble: " + counter, SpaceRumble.WIDTH, SpaceRumble.HEIGHT);
-		// playerManager.getAll().forEach(player -> player.draw(sb));
-		for (Player player : playerManager.getAll()) {
-			player.draw(sb);
-		}
-		spaceShip.draw(sb);
+		playerManager.getAll().forEach(player -> player.draw(sb));
 		sb.end();
 	}
 
@@ -83,7 +71,6 @@ public class MenuState extends State {
 		font.dispose();
 		world.dispose();
 		playerManager.getAll().forEach(Player::dispose);
-		spaceShip.dispose();
 	}
 
 	@Override
@@ -310,37 +297,31 @@ public class MenuState extends State {
 
 	@Override
 	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 }
