@@ -10,7 +10,7 @@ public class SpaceShip extends GameObject {
 	
 	public SpaceShip(World world, float x, float y) {
 		super(new Texture("yellowship.png"), world, 15, 30);
-		setPosition(500, 500);
+		setPosition(x, y);
 		boost = left = right = false;
 	}
 
@@ -35,8 +35,6 @@ public class SpaceShip extends GameObject {
 
 		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2,
 				(body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
-		System.out.println("bPosition: " + body.getPosition());
-		System.out.println("%: " + sprite.getX() / body.getPosition().x);
 		sprite.setRotation((float) Math.toDegrees(body.getAngle()));
 	}
 

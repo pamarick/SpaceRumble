@@ -60,7 +60,7 @@ public class MenuState extends State {
 		super.render(sb);
 		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
-		font.draw(sb, "SpaceRumble: " + counter, SpaceRumble.WIDTH, SpaceRumble.HEIGHT);
+		font.draw(sb, "SpaceRumble: " + counter, 0, SpaceRumble.HEIGHT*2);
 		playerManager.getAll().forEach(player -> player.draw(sb));
 		sb.end();
 	}
