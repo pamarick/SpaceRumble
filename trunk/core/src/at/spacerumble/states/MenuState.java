@@ -33,7 +33,7 @@ public class MenuState extends State {
 
 		this.counter = counter;
 
-		cam.zoom = 1;
+		cam.zoom = 2f;
 		
 		font = new BitmapFont();
 		font.setUseIntegerPositions(false);
@@ -58,6 +58,7 @@ public class MenuState extends State {
 
 	@Override
 	public void update(float dt) {
+		super.update(dt);
 		world.step(dt, 6, 2);
 		playerManager.getAll().forEach(player -> player.update(dt));
 	}
@@ -65,7 +66,6 @@ public class MenuState extends State {
 	@Override
 	public void render(SpriteBatch sb) {
 		super.render(sb);
-		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
 		font.draw(sb, "SpaceRumble: " + counter, 0, 0);
 		playerManager.getAll().forEach(player -> player.draw(sb));
