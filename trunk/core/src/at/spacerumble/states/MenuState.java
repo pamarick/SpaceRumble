@@ -7,11 +7,15 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import at.spacerumble.SpaceRumble;
+import at.spacerumble.debugrenderer.Renderer;
 import at.spacerumble.objects.SpaceShip;
 import at.spacerumble.players.Player;
 import at.spacerumble.players.PlayerManager;
@@ -26,9 +30,11 @@ public class MenuState extends State {
 
 	public MenuState(GameStateManager gsm, int counter) {
 		super(gsm);
-		this.counter = counter;
-		cam.setToOrtho(false, SpaceRumble.WIDTH * 2, SpaceRumble.HEIGHT * 2);
 
+		this.counter = counter;
+
+		cam.zoom = 1;
+		
 		font = new BitmapFont();
 		font.setUseIntegerPositions(false);
 		font.getData().setScale(2, 2);
@@ -37,8 +43,9 @@ public class MenuState extends State {
 
 		playerManager = new PlayerManager();
 		playerManager.addPlayer("Player1");
-		playerManager.get("Player1").setSpaceShip(new SpaceShip(world, 640, 360));
-		
+		playerManager.addPlayer("Player2");
+		playerManager.get("Player1").setSpaceShip(new SpaceShip(world, 0, 0));
+		playerManager.get("Player2").setSpaceShip(new SpaceShip(world, 100, 100));
 		playerManager.addGamepads(Controllers.getControllers());
 	}
 
@@ -60,17 +67,18 @@ public class MenuState extends State {
 		super.render(sb);
 		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
-		font.draw(sb, "SpaceRumble: " + counter, 0, SpaceRumble.HEIGHT*2);
+		font.draw(sb, "SpaceRumble: " + counter, 0, 0);
 		playerManager.getAll().forEach(player -> player.draw(sb));
 		sb.end();
+		Renderer.debugRenderer.render(world, cam.combined);
 	}
 
 	@Override
-	public void dispose() {
-		gsm.set(new MenuState(gsm, counter + 1));
+	public void dispose() {	
 		font.dispose();
 		world.dispose();
 		playerManager.getAll().forEach(Player::dispose);
+		gsm.set(new MenuState(gsm, counter + 1));
 	}
 
 	@Override
@@ -251,24 +259,43 @@ public class MenuState extends State {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if (keycode == Input.Keys.RIGHT) {
+		if (keycode == Input.Keys.D) {
 			playerManager.get("Player1").getSpaceShip().setRight(true);
 			System.out.println("Right");
 		}
-		if (keycode == Input.Keys.LEFT) {
+		if (keycode == Input.Keys.A) {
 			playerManager.get("Player1").getSpaceShip().setLeft(true);
 			System.out.println("Left");
 		}
-		if (keycode == Input.Keys.UP) {
+		if (keycode == Input.Keys.W) {
 			playerManager.get("Player1").getSpaceShip().setBoost(true);
 			System.out.println("Up");
 		}
-		if (keycode == Input.Keys.DOWN) {
+		if (keycode == Input.Keys.S) {
 			playerManager.get("Player1").getSpaceShip().stop();
 			System.out.println("Down");
 		}
-		if (keycode == Input.Keys.P) {
-			System.out.println("Pause");
+		
+		if (keycode == Input.Keys.RIGHT) {
+			playerManager.get("Player2").getSpaceShip().setRight(true);
+			System.out.println("Right");
+		}
+		if (keycode == Input.Keys.LEFT) {
+			playerManager.get("Player2").getSpaceShip().setLeft(true);
+			System.out.println("Left");
+		}
+		if (keycode == Input.Keys.UP) {
+			playerManager.get("Player2").getSpaceShip().setBoost(true);
+			System.out.println("Up");
+		}
+		if (keycode == Input.Keys.DOWN) {
+			playerManager.get("Player2").getSpaceShip().stop();
+			System.out.println("Down");
+		}
+		
+		
+		if (keycode == Input.Keys.R) {
+			System.out.println("Reset");
 			endState();
 		}
 		return false;
@@ -276,20 +303,37 @@ public class MenuState extends State {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (keycode == Input.Keys.RIGHT) {
+		if (keycode == Input.Keys.D) {
 			playerManager.get("Player1").getSpaceShip().setRight(false);
 			System.out.println("Right");
 		}
-		if (keycode == Input.Keys.LEFT) {
+		if (keycode == Input.Keys.A) {
 			playerManager.get("Player1").getSpaceShip().setLeft(false);
 			System.out.println("Left");
 		}
-		if (keycode == Input.Keys.UP) {
+		if (keycode == Input.Keys.W) {
 			playerManager.get("Player1").getSpaceShip().setBoost(false);
 			System.out.println("Up");
 		}
-		if (keycode == Input.Keys.DOWN) {
+		if (keycode == Input.Keys.S) {
 			playerManager.get("Player1").getSpaceShip().stop();
+			System.out.println("Down");
+		}
+		
+		if (keycode == Input.Keys.RIGHT) {
+			playerManager.get("Player2").getSpaceShip().setRight(false);
+			System.out.println("Right");
+		}
+		if (keycode == Input.Keys.LEFT) {
+			playerManager.get("Player2").getSpaceShip().setLeft(false);
+			System.out.println("Left");
+		}
+		if (keycode == Input.Keys.UP) {
+			playerManager.get("Player2").getSpaceShip().setBoost(false);
+			System.out.println("Up");
+		}
+		if (keycode == Input.Keys.DOWN) {
+			playerManager.get("Player2").getSpaceShip().stop();
 			System.out.println("Down");
 		}
 		return false;

@@ -7,9 +7,9 @@ import com.badlogic.gdx.physics.box2d.World;
 public class SpaceShip extends GameObject {
 
 	private boolean boost, left, right;
-	
+
 	public SpaceShip(World world, float x, float y) {
-		super(new Texture("yellowship.png"), world, 15, 30);
+		super(new Texture("yellowship.png"), world, 75, 150);
 		setPosition(x, y);
 		boost = left = right = false;
 	}
@@ -33,8 +33,10 @@ public class SpaceShip extends GameObject {
 			body.setAngularVelocity(0);
 		}
 
-		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2,
-				(body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
+//		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2,
+//				(body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
+		sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
+
 		sprite.setRotation((float) Math.toDegrees(body.getAngle()));
 	}
 
@@ -68,8 +70,10 @@ public class SpaceShip extends GameObject {
 	}
 
 	public void setPosition(final float x, final float y) {
-		float rx = (x + (sprite.getWidth() / 2)) / PIXELS_TO_METERS;
-		float ry = (y + (sprite.getHeight() / 2)) / PIXELS_TO_METERS;
+//		float rx = (x + (sprite.getWidth() / 2)) / PIXELS_TO_METERS;
+//		float ry = (y + (sprite.getHeight() / 2)) / PIXELS_TO_METERS;
+		float rx = (x + (sprite.getWidth() / 2));
+		float ry = (y + (sprite.getHeight() / 2));
 		body.setTransform(rx, ry, body.getAngle());
 	}
 
