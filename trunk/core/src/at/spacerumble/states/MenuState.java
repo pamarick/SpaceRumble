@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import at.spacerumble.SpaceRumble;
 import at.spacerumble.debugrenderer.Renderer;
 import at.spacerumble.objects.SpaceShip;
+import at.spacerumble.objects.SpaceShipColor;
 import at.spacerumble.players.Player;
 import at.spacerumble.players.PlayerManager;
 
@@ -42,8 +43,8 @@ public class MenuState extends State {
     playerManager = new PlayerManager();
     playerManager.addPlayer("Player1");
     playerManager.addPlayer("Player2");
-    playerManager.get("Player1").setSpaceShip(new SpaceShip(world, 0, 0));
-    playerManager.get("Player2").setSpaceShip(new SpaceShip(world, 10, 0));
+    playerManager.get("Player1").setSpaceShip(new SpaceShip(world, SpaceShipColor.GREEN, 0, 0));
+    playerManager.get("Player2").setSpaceShip(new SpaceShip(world, SpaceShipColor.PINK, 10, 0));
     playerManager.addGamepads(Controllers.getControllers());
   }
 

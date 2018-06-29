@@ -12,22 +12,19 @@ public class SpaceShip extends GameObject {
 
   private boolean boost, left, right;
 
-  public SpaceShip(World world, float x, float y) {
-    texture = new Texture("yellowship.png");
+  public SpaceShip(World world, SpaceShipColor spaceShipColor, float x, float y) {
+    texture = new Texture(spaceShipColor.get());
     sprite = new Sprite(texture);
-    sprite.setSize(1, 2);
+    sprite.setSize(75, 150);
     sprite.setOriginCenter();
     sprite.setRotation(0f);
+    sprite.setScale(1/75f);
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyDef.BodyType.DynamicBody;
-    // bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
-    bodyDef.position.set(sprite.getX() + sprite.getWidth() / 2, sprite.getY() + sprite.getHeight() / 2);
     body = world.createBody(bodyDef);
     PolygonShape shape = new PolygonShape();
-    // Vector2[] vertices = {new Vector2(0, 0), new Vector2(10, 0), new Vector2(0, 10)};
-    // shape.set(vertices);
-    // shape.setAsBox((sprite.getWidth() / 2 / PIXELS_TO_METERS)*100, (sprite.getHeight() / 2 / PIXELS_TO_METERS)*100);
-    shape.setAsBox(sprite.getWidth() / 2, sprite.getHeight() / 2);
+    shape.set(getVertices());
+//    shape.setAsBox((sprite.getWidth()*sprite.getScaleX()) / 2, (sprite.getHeight()*sprite.getScaleX()) / 2);
     FixtureDef fixtureDef = new FixtureDef();
     fixtureDef.shape = shape;
     fixtureDef.density = 0.5f;
@@ -57,9 +54,7 @@ public class SpaceShip extends GameObject {
     } else {
       body.setAngularVelocity(0);
     }
-
-    // sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2,
-    // (body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
+    
     sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
 
     sprite.setRotation((float) Math.toDegrees(body.getAngle()));
@@ -95,11 +90,18 @@ public class SpaceShip extends GameObject {
   }
 
   public void setPosition(final float x, final float y) {
-    // float rx = (x + (sprite.getWidth() / 2)) / PIXELS_TO_METERS;
-    // float ry = (y + (sprite.getHeight() / 2)) / PIXELS_TO_METERS;
-    float rx = (x + (sprite.getWidth() / 2));
-    float ry = (y + (sprite.getHeight() / 2));
+    float rx = (x + ((sprite.getWidth() * sprite.getScaleX()) / 2));
+    float ry = (y + ((sprite.getHeight() * sprite.getScaleY()) / 2));
     body.setTransform(rx, ry, body.getAngle());
   }
 
+  private Vector2[] getVertices() {
+	float sX = sprite.getScaleX();
+	float sY = sprite.getScaleY();
+	float w = sprite.getWidth()*sX;
+	float h = sprite.getHeight()*sY;
+	float wS = 75/sprite.getWidth();
+	float hS = 150/sprite.getHeight();
+	return new Vector2[]{new Vector2(-w/2+0f*sX*(1/wS), -h/2+0f*sY*(1/hS)), new Vector2(-w/2+0f*sX*(1/wS), -h/2+56f*sY*(1/hS)), new Vector2(-w/2+10f*sX*(1/wS), -h/2+97f*sY*(1/hS)), new Vector2(-w/2+37f*sX*(1/wS), -h/2+149f*sY*(1/hS)), new Vector2(-w/2+64f*sX*(1/wS), -h/2+97f*sY*(1/hS)), new Vector2(-w/2+74f*sX*(1/wS), -h/2+56f*sY*(1/hS)), new Vector2(-w/2+74f*sX*(1/wS), -h/2+0f*sY*(1/hS))};
+  }
 }
