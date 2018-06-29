@@ -56,7 +56,6 @@ public class SpaceShip extends GameObject {
     }
     
     sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
-
     sprite.setRotation((float) Math.toDegrees(body.getAngle()));
   }
 
@@ -100,8 +99,8 @@ public class SpaceShip extends GameObject {
 	float sY = sprite.getScaleY();
 	float w = sprite.getWidth()*sX;
 	float h = sprite.getHeight()*sY;
-	float wS = 75/sprite.getWidth();
-	float hS = 150/sprite.getHeight();
+	float wS = 74/sprite.getWidth();
+	float hS = 148/sprite.getHeight();
 	return new Vector2[]{new Vector2(-w/2+0f*sX*(1/wS), -h/2+0f*sY*(1/hS)), new Vector2(-w/2+0f*sX*(1/wS), -h/2+56f*sY*(1/hS)), new Vector2(-w/2+10f*sX*(1/wS), -h/2+97f*sY*(1/hS)), new Vector2(-w/2+37f*sX*(1/wS), -h/2+149f*sY*(1/hS)), new Vector2(-w/2+64f*sX*(1/wS), -h/2+97f*sY*(1/hS)), new Vector2(-w/2+74f*sX*(1/wS), -h/2+56f*sY*(1/hS)), new Vector2(-w/2+74f*sX*(1/wS), -h/2+0f*sY*(1/hS))};
   }
 }
