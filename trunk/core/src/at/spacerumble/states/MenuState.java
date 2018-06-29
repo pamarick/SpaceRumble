@@ -30,11 +30,11 @@ public class MenuState extends State {
     super(gsm);
 
     this.counter = counter;
-    setZoomFactor(6f);
+    setZoom(1f);
 
     font = new BitmapFont();
     font.setUseIntegerPositions(false);
-    font.getData().setScale(10, 10);
+    font.getData().setScale(0.1f, 0.1f);
     font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 
     world = new World(new Vector2(0, 0), true);
@@ -43,7 +43,7 @@ public class MenuState extends State {
     playerManager.addPlayer("Player1");
     playerManager.addPlayer("Player2");
     playerManager.get("Player1").setSpaceShip(new SpaceShip(world, 0, 0));
-    playerManager.get("Player2").setSpaceShip(new SpaceShip(world, 100, 100));
+    playerManager.get("Player2").setSpaceShip(new SpaceShip(world, 10, 0));
     playerManager.addGamepads(Controllers.getControllers());
   }
 

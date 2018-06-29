@@ -21,9 +21,10 @@ public abstract class State implements ControllerListener, InputProcessor {
     this.gsm = gsm;
     cam = new OrthographicCamera(SpaceRumble.WIDTH, SpaceRumble.HEIGHT);
     zoomFactor = 1f;
-    cam.viewportWidth = SpaceRumble.WIDTH;
-    cam.viewportHeight = SpaceRumble.HEIGHT;
+    // cam.viewportWidth = SpaceRumble.WIDTH;
+    // cam.viewportHeight = SpaceRumble.HEIGHT;
     cam.position.set(SpaceRumble.WIDTH / 2, SpaceRumble.HEIGHT / 2, 0);
+    // cam.setToOrtho(false, cam.viewportWidth * SpaceRumble.PPM, cam.viewportHeight * SpaceRumble.PPM);
     // cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     endState = false;
     Controllers.addListener(this);
@@ -53,14 +54,10 @@ public abstract class State implements ControllerListener, InputProcessor {
     return zoomFactor;
   }
 
-  public void setZoomFactor(float zoomFactor) {
+  public void setZoom(float zoomFactor) {
     this.zoomFactor = zoomFactor;
-    setZoom(zoomFactor);
-  }
-
-  private void setZoom(float factor) {
-    cam.viewportWidth = SpaceRumble.WIDTH * factor;
-    cam.viewportHeight = SpaceRumble.HEIGHT * factor;
-    cam.position.set((SpaceRumble.WIDTH * factor) / 2, (SpaceRumble.HEIGHT * factor) / 2, 0);
+    cam.viewportWidth = SpaceRumble.WIDTH * zoomFactor;
+    cam.viewportHeight = SpaceRumble.HEIGHT * zoomFactor;
+    cam.position.set((SpaceRumble.WIDTH * zoomFactor) / 2, (SpaceRumble.HEIGHT * zoomFactor) / 2, 0);
   }
 }
