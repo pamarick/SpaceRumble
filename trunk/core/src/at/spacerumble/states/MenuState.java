@@ -1,5 +1,9 @@
 package at.spacerumble.states;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
@@ -13,7 +17,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
 import at.spacerumble.SpaceRumble;
-import at.spacerumble.debugrenderer.Renderer;
+import at.spacerumble.objects.Line;
 import at.spacerumble.objects.SpaceShip;
 import at.spacerumble.objects.SpaceShipColor;
 import at.spacerumble.players.Player;
@@ -23,16 +27,17 @@ public class MenuState extends State {
 
   private final PlayerManager playerManager;
   private final World world;
-
+  private final List<Line> map;
+  
   private final BitmapFont font;
   private final int counter;
-
+  
   public MenuState(GameStateManager gsm, int counter) {
     super(gsm);
 
     this.counter = counter;
     setZoom(1f);
-
+    
     font = new BitmapFont();
     font.setUseIntegerPositions(false);
     font.getData().setScale(0.1f, 0.1f);
@@ -40,12 +45,18 @@ public class MenuState extends State {
 
     world = new World(new Vector2(0, 0), true);
 
+    map = Arrays.asList(new Line(world, new Vector2(5, 5), 0f, SpaceRumble.WIDTH-10), new Line(world, new Vector2(5, SpaceRumble.HEIGHT-5), 0f, SpaceRumble.WIDTH-10), new Line(world, new Vector2(5, 5), 90f, SpaceRumble.HEIGHT-10), new Line(world, new Vector2(SpaceRumble.WIDTH-5, 5), 90f, SpaceRumble.HEIGHT-10));
+    
     playerManager = new PlayerManager();
     playerManager.addPlayer("Player1");
     playerManager.addPlayer("Player2");
-    playerManager.get("Player1").setSpaceShip(new SpaceShip(world, SpaceShipColor.GREEN, 0, 0));
-    playerManager.get("Player2").setSpaceShip(new SpaceShip(world, SpaceShipColor.PINK, 10, 0));
-    playerManager.addGamepads(Controllers.getControllers());
+    playerManager.addPlayer("Player3");
+    playerManager.addPlayer("Player4");
+    playerManager.get("Player1").setSpaceShip(new SpaceShip(world, SpaceShipColor.GREEN, 10, 10, 0f));
+    playerManager.get("Player2").setSpaceShip(new SpaceShip(world, SpaceShipColor.RED, SpaceRumble.WIDTH-10, 10, 0f));
+    playerManager.get("Player3").setSpaceShip(new SpaceShip(world, SpaceShipColor.PINK, SpaceRumble.WIDTH-10, SpaceRumble.HEIGHT-10, 180f));
+    playerManager.get("Player4").setSpaceShip(new SpaceShip(world, SpaceShipColor.ORANGE, 10, SpaceRumble.HEIGHT-10, 180f));
+    playerManager.addGamepads(Controllers.getControllers());  
   }
 
   @Override
@@ -60,6 +71,7 @@ public class MenuState extends State {
     super.update(dt);
     world.step(dt, 6, 2);
     playerManager.getAll().forEach(player -> player.update(dt));
+
   }
 
   @Override
@@ -68,12 +80,14 @@ public class MenuState extends State {
     sb.begin();
     font.draw(sb, "SpaceRumble: " + counter, 0, SpaceRumble.HEIGHT * getZoomFactor());
     playerManager.getAll().forEach(player -> player.draw(sb));
+    map.forEach(line -> line.draw(sb));
     sb.end();
-    Renderer.debugRenderer.render(world, cam.combined);
+    //Renderer.debugRenderer.render(world, cam.combined);
   }
 
   @Override
   public void dispose() {
+	map.forEach(Line::dispose);
     font.dispose();
     world.dispose();
     playerManager.getAll().forEach(Player::dispose);

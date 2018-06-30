@@ -10,14 +10,15 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class SpaceShip extends GameObject {
 
+	
+	
   private boolean boost, left, right;
 
-  public SpaceShip(World world, SpaceShipColor spaceShipColor, float x, float y) {
+  public SpaceShip(final World world, final SpaceShipColor spaceShipColor, final float x, final float y, final float angle) {
     texture = new Texture(spaceShipColor.get());
     sprite = new Sprite(texture);
     sprite.setSize(75, 150);
     sprite.setOriginCenter();
-    sprite.setRotation(0f);
     sprite.setScale(1/75f);
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -32,7 +33,7 @@ public class SpaceShip extends GameObject {
     // fixtureDef.restitution = 1f;
     body.createFixture(fixtureDef);
     shape.dispose();
-    setPosition(x, y);
+    setPosition(x, y, angle);
     boost = left = right = false;
   }
 
@@ -45,7 +46,7 @@ public class SpaceShip extends GameObject {
 
   public void update(float dt) {
     if (isBoost()) {
-      body.applyForceToCenter(getBoostVelocity(100f), true);
+      body.applyForceToCenter(getBoostVelocity(25f), true);
     }
     if (isRight()) {
       body.setAngularVelocity(-5);
@@ -54,6 +55,9 @@ public class SpaceShip extends GameObject {
     } else {
       body.setAngularVelocity(0);
     }
+    
+    if(body.getLinearVelocity().len() > 25f)
+    	body.setLinearVelocity((25f / body.getLinearVelocity().len()) * body.getLinearVelocity().x, (25f / body.getLinearVelocity().len()) * body.getLinearVelocity().y);
     
     sprite.setPosition(body.getPosition().x - sprite.getWidth() / 2, body.getPosition().y - sprite.getHeight() / 2);
     sprite.setRotation((float) Math.toDegrees(body.getAngle()));
@@ -88,10 +92,11 @@ public class SpaceShip extends GameObject {
     this.right = right;
   }
 
-  public void setPosition(final float x, final float y) {
+  public void setPosition(final float x, final float y, final float angle) {
     float rx = (x + ((sprite.getWidth() * sprite.getScaleX()) / 2));
     float ry = (y + ((sprite.getHeight() * sprite.getScaleY()) / 2));
-    body.setTransform(rx, ry, body.getAngle());
+    body.setTransform(rx, ry, (float) Math.toRadians(angle));
+    System.out.println("pos: " + body.getPosition());
   }
 
   private Vector2[] getVertices() {
@@ -103,4 +108,5 @@ public class SpaceShip extends GameObject {
 	float hS = 148/sprite.getHeight();
 	return new Vector2[]{new Vector2(-w/2+0f*sX*(1/wS), -h/2+0f*sY*(1/hS)), new Vector2(-w/2+0f*sX*(1/wS), -h/2+56f*sY*(1/hS)), new Vector2(-w/2+10f*sX*(1/wS), -h/2+97f*sY*(1/hS)), new Vector2(-w/2+37f*sX*(1/wS), -h/2+149f*sY*(1/hS)), new Vector2(-w/2+64f*sX*(1/wS), -h/2+97f*sY*(1/hS)), new Vector2(-w/2+74f*sX*(1/wS), -h/2+56f*sY*(1/hS)), new Vector2(-w/2+74f*sX*(1/wS), -h/2+0f*sY*(1/hS))};
   }
+
 }
