@@ -31,8 +31,6 @@ public abstract class State implements ControllerListener, InputProcessor {
     Gdx.input.setInputProcessor(this);
   }
 
-  protected abstract void handleInput();
-
   protected abstract void dispose();
 
   protected void update(float dt) {

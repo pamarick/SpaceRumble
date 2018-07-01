@@ -11,8 +11,6 @@ public class Line extends GameObject {
 	
 	private final static float thickness = 0.1f;
 	
-	private float angular;
-	
 	public Line(final World world, final Vector2 position, final float angle, final float length) {
 		texture = new Texture("px_white.png");
 	    sprite = new Sprite(texture);

@@ -1,21 +1,25 @@
 package at.spacerumble.players;
 
-import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import at.spacerumble.objects.SpaceShip;
 
 public class Player {
-
+	
 	private String name;
-	private Controller gamepad;
 	private SpaceShip spaceShip;
+	private int InputId;
 	
+	private int boostKey;
+	private int leftKey;
+	private int rightKey;
 	
-	public Player(String name) {
+	public Player(String name, int boostKey, int leftKey, int rightKey) {
 		this.name = name;
-		this.gamepad = null;
 		this.spaceShip = null;
+		this.boostKey = boostKey;
+		this.leftKey = leftKey;
+		this.rightKey = rightKey;
 	}
 	
 	public String getName() {
@@ -24,14 +28,6 @@ public class Player {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public void setGamepad(Controller gamepad) {
-		this.gamepad = gamepad;
-	}
-
-	public Controller getGamepad() {
-		return gamepad;
 	}
 	
 	public void setSpaceShip(SpaceShip spaceShip) {
@@ -52,6 +48,23 @@ public class Player {
 	
 	public void dispose() {
 		spaceShip.dispose();
+	}
+
+	public int getInputId() {
+		return InputId;
+	}
+
+	public void setInputId(int inputId) {
+		InputId = inputId;
+	}
+	
+	public void input(int key) {
+		if(key == boostKey)
+			spaceShip.setBoost(!spaceShip.isBoost());
+		if(key == leftKey)
+			spaceShip.setLeft(!spaceShip.isLeft());
+		if(key == rightKey)
+			spaceShip.setRight(!spaceShip.isRight());
 	}
 		
 }

@@ -3,9 +3,6 @@ package at.spacerumble.players;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.utils.Array;
-
 public class PlayerManager {
 	private List<Player> playerManager;
 
@@ -21,48 +18,20 @@ public class PlayerManager {
 		playerManager = players;
 	}
 
-	public Player get(Controller gamepad) {
-		for (Player player : playerManager) {
-			if (player.getGamepad() == gamepad)
-				return player;
-		}
-		return null;
-	}
-
 	public Player get(String name) {
 		for (Player player : playerManager) {
-			if (player.getName() == name)
+			if (player.getName().equals(name))
 				return player;
 		}
 		return null;
 	}
-
-	public void addGamepad(Controller gamepad) {
+	
+	public Player get(int inputId) {
 		for (Player player : playerManager) {
-			if (player.getGamepad() == null) {
-				player.setGamepad(gamepad);
-				break;
-			}
+			if (player.getInputId() == inputId)
+				return player;
 		}
-	}
-
-	public void addGamepads(Array<Controller> gamepads) {
-		for (Controller gamepad : gamepads) {
-			for (Player player : playerManager) {
-				if (player.getGamepad() == null) {
-					player.setGamepad(gamepad);
-					break;
-				}
-			}
-		}
-	}
-
-	public void removeGamepad(Controller gamepad) {
-		get(gamepad).setGamepad(null);
-	}
-
-	public void addPlayer(String name) {
-		playerManager.add(new Player(name));
+		return null;
 	}
 
 	public void addPlayer(Player player) {
@@ -75,5 +44,9 @@ public class PlayerManager {
 
 	public void removePlayer(Player player) {
 		playerManager.remove(player);
+	}
+	
+	public void dispose() {
+		getAll().forEach(Player::dispose);
 	}
 }
