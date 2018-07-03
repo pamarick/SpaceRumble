@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
 import at.spacerumble.SpaceRumble;
+import at.spacerumble.debugrenderer.Renderer;
 import at.spacerumble.gamepads.XboxGamepad;
 import at.spacerumble.objects.Line;
 import at.spacerumble.objects.SpaceShip;
@@ -74,7 +75,7 @@ public class MenuState extends State {
     playerManager.getAll().forEach(player -> player.draw(sb));
     map.forEach(line -> line.draw(sb));
     sb.end();
-    // Renderer.debugRenderer.render(world, cam.combined);
+    Renderer.debugRenderer.render(world, cam.combined);
   }
 
   @Override

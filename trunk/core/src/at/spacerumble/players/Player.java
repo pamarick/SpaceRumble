@@ -71,7 +71,7 @@ public class Player {
       spaceShip.setRight(!spaceShip.isRight());
     }
     if (key == shootKey) {
-      spaceShip.shoot();
+      spaceShip.setShoot(!spaceShip.isShoot());;
     }
   }
 
