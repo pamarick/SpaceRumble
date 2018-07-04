@@ -77,8 +77,6 @@ public class SpaceShip extends GameObject {
 			body.applyForceToCenter(getBoostVelocity(25f), true);
 		}
 
-		// 
-		// 
 		if (isShoot())
 			shoot();
 

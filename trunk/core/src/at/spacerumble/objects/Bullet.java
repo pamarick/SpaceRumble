@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class Bullet extends GameObject {
@@ -22,8 +21,8 @@ public class Bullet extends GameObject {
 	    BodyDef bodyDef = new BodyDef();
 	    bodyDef.type = BodyDef.BodyType.DynamicBody;
 	    body = world.createBody(bodyDef);
+	    body.setBullet(true);
 	    CircleShape shape = new CircleShape();
-	    //shape.setAsBox((sprite.getWidth() * sprite.getScaleX()) / 2, (sprite.getHeight() * sprite.getScaleX()) / 2);
 	    shape.setRadius((sprite.getWidth() * sprite.getScaleX()) / 2);
 	    FixtureDef fixtureDef = new FixtureDef();
 	    fixtureDef.shape = shape;
@@ -35,15 +34,7 @@ public class Bullet extends GameObject {
 	    setPosition(x, y, angle);
 	    speed = 100;
 	    body.setLinearVelocity((float) (velocity.x + Math.cos(body.getAngle() + Math.PI / 2) * speed), (float) (velocity.y + Math.sin(body.getAngle() + Math.PI / 2) * speed));
-	    //body.applyForceToCenter(getBoostVelocity(100000000000000000000000000000f), true);
 	  }
-
-  private Vector2 getBoostVelocity(float force) {
-    Vector2 v = new Vector2();
-    v.x = (float) (force * Math.cos(body.getAngle() + Math.PI / 2));
-    v.y = (float) (force * Math.sin(body.getAngle() + Math.PI / 2));
-    return v;
-  }
 
   public void update(float dt) {
 
