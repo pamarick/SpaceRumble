@@ -22,11 +22,8 @@ public class SpaceRumble extends ApplicationAdapter {
 
   private SpriteBatch batch;
 
-  private FPSLogger fpsLog;
-
   @Override
   public void create() {
-    fpsLog = new FPSLogger();
     batch = new SpriteBatch();
     gsm = new GameStateManager();
     Gdx.gl.glClearColor(0, 0, 0, 0);
@@ -40,7 +37,6 @@ public class SpaceRumble extends ApplicationAdapter {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     gsm.render(batch);
-    fpsLog.log();
   }
 
   @Override

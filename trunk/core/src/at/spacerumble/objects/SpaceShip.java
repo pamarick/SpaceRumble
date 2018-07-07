@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -25,6 +28,7 @@ public class SpaceShip extends GameObject {
 	
 	public SpaceShip(final World world, final SpaceShipColor spaceShipColor, final float x, final float y,
 			final float angle) {
+		super(world);
 		this.world = world;
 		texture = new Texture(spaceShipColor.get());
 		sprite = new Sprite(texture);
@@ -169,5 +173,18 @@ public class SpaceShip extends GameObject {
 				new Vector2(-w / 2 + 74f * sX * (1 / wS), -h / 2 + 56f * sY * (1 / hS)),
 				new Vector2(-w / 2 + 74f * sX * (1 / wS), -h / 2 + 0f * sY * (1 / hS)) };
 	}
+	
+	@Override
+	public void endContact(Contact contact) {
+		System.out.println("SpaceShip: endContact");
+	}
 
+//	world.destroyBody(body);
+//	body.setUserData(null);
+//	body = null;
+//	this.dispose();
+	@Override
+	public void beginContact(Contact contact) {
+		System.out.println("SpaceShip: beginContact");
+	}
 }

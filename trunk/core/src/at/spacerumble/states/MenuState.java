@@ -3,6 +3,7 @@ package at.spacerumble.states;
 import java.util.Arrays;
 import java.util.List;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.PovDirection;
@@ -98,12 +99,12 @@ public class MenuState extends State {
   public void render(SpriteBatch sb) {
     super.render(sb);
     sb.begin();
-    font.draw(sb, "SpaceRumble", 0, SpaceRumble.HEIGHT * getZoomFactor());
+    font.draw(sb, "SpaceRumble fps: " + Gdx.graphics.getFramesPerSecond(), 0, SpaceRumble.HEIGHT * getZoomFactor());
     playerManager.getAll().forEach(player -> player.draw(sb));
     enemy.draw(sb);
     map.forEach(line -> line.draw(sb));
     sb.end();
-    //Renderer.debugRenderer.render(world, cam.combined);
+    Renderer.debugRenderer.render(world, cam.combined);
   }
 
   @Override
