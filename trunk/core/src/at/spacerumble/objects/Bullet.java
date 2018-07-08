@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -14,7 +13,6 @@ public class Bullet extends GameObject {
 	public final float speed;
 
 	public Bullet(final World world, final float x, final float y, final float angle, final Vector2 velocity) {
-		super(world);
 		texture = new Texture("px_white.png");
 		sprite = new Sprite(texture);
 		sprite.setSize(1, 1);
@@ -37,6 +35,7 @@ public class Bullet extends GameObject {
 		speed = 100;
 		body.setLinearVelocity((float) (velocity.x + Math.cos(body.getAngle() + Math.PI / 2) * speed),
 				(float) (velocity.y + Math.sin(body.getAngle() + Math.PI / 2) * speed));
+		body.setUserData("Bullet");
 	}
 
 	public void update(float dt) {
@@ -58,13 +57,4 @@ public class Bullet extends GameObject {
 		body.setTransform(rx, ry, (float) Math.toRadians(angle));
 	}
 
-	@Override
-	public void endContact(Contact contact) {
-		System.out.println("Bullet: endContact");
-	}
-
-	@Override
-	public void beginContact(Contact contact) {
-		System.out.println("Bullet: beginContact");
-	}
 }

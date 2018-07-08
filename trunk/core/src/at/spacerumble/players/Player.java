@@ -49,7 +49,7 @@ public class Player {
   }
 
   public void dispose() {
-    spaceShip.dispose();
+	spaceShip.destroy();
   }
 
   public int getInputId() {

@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -28,7 +26,6 @@ public class SpaceShip extends GameObject {
 	
 	public SpaceShip(final World world, final SpaceShipColor spaceShipColor, final float x, final float y,
 			final float angle) {
-		super(world);
 		this.world = world;
 		texture = new Texture(spaceShipColor.get());
 		sprite = new Sprite(texture);
@@ -55,6 +52,7 @@ public class SpaceShip extends GameObject {
 		shotsPerSeconds = 0.5f;
 		timer = System.currentTimeMillis();
 		hasShot = 0;
+		body.setUserData("SpaceShip");
 	}
 
 	private Vector2 getBoostVelocity(float force) {
@@ -77,6 +75,7 @@ public class SpaceShip extends GameObject {
 	}
 	
 	public void update(float dt) {
+		super.update(dt);
 		if (isBoost()) {
 			body.applyForceToCenter(getBoostVelocity(25f), true);
 		}
@@ -149,7 +148,6 @@ public class SpaceShip extends GameObject {
 	@Override
 	public void dispose() {
 		super.dispose();
-		bullets.forEach(Bullet::dispose);
 	}
 
 	public void setPosition(final float x, final float y, final float angle) {
@@ -174,17 +172,8 @@ public class SpaceShip extends GameObject {
 				new Vector2(-w / 2 + 74f * sX * (1 / wS), -h / 2 + 0f * sY * (1 / hS)) };
 	}
 	
-	@Override
-	public void endContact(Contact contact) {
-		System.out.println("SpaceShip: endContact");
+	public Body getBody() {
+		return body;
 	}
 
-//	world.destroyBody(body);
-//	body.setUserData(null);
-//	body = null;
-//	this.dispose();
-	@Override
-	public void beginContact(Contact contact) {
-		System.out.println("SpaceShip: beginContact");
-	}
 }
