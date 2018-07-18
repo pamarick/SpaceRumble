@@ -97,6 +97,10 @@ public class MenuState extends State {
 		map.forEach(line -> line.update(dt));
 		if (enemy != null)
 			enemy.update(dt);
+		else
+			dispose();
+		if(playerManager.getAll().size() < 1)
+			dispose();
 	}
 
 	@Override
@@ -119,7 +123,7 @@ public class MenuState extends State {
 		world.dispose();
 		playerManager.getAll().forEach(Player::dispose);
 		if (enemy != null)
-			enemy.dispose();
+			enemy.dispose();	
 		gsm.set(new SetPlayerState(gsm));
 	}
 
@@ -238,8 +242,7 @@ public class MenuState extends State {
 					enemy.dispose();
 					enemy = null;
 				}
-		}
-		if (bB.getUserData().equals("SpaceShip")) {
+		}else if (bB.getUserData().equals("SpaceShip")) {
 //			playerManager.getAll().forEach(player -> {if(player.getSpaceShip().getBody().equals(bB)) {System.out.println("testb");player.getSpaceShip().destroy(); player.dispose();}});
 			if (playerManager.get(bB) != null) {
 				playerManager.removePlayer(playerManager.get(bB));

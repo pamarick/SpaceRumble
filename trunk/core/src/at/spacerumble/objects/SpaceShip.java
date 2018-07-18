@@ -17,7 +17,7 @@ public class SpaceShip extends GameObject {
 
 	private boolean boost, left, right, shoot;
 
-	private final List<Bullet> bullets;
+	private static final List<Bullet> bullets = new ArrayList<>();;
 	
 	private final float shotsPerSeconds;
 	private int hasShot;
@@ -48,7 +48,6 @@ public class SpaceShip extends GameObject {
 		shape.dispose();
 		setPosition(x, y, angle);
 		boost = left = right = false;
-		bullets = new ArrayList<>();
 		shotsPerSeconds = 0.5f;
 		timer = System.currentTimeMillis();
 		hasShot = 0;

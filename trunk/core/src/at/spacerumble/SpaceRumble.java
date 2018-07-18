@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import at.spacerumble.states.GameStateManager;
 import at.spacerumble.states.MenuState;
+import at.spacerumble.states.SetPlayerState;
 
 public class SpaceRumble extends ApplicationAdapter {
 
@@ -25,8 +26,8 @@ public class SpaceRumble extends ApplicationAdapter {
     batch = new SpriteBatch();
     gsm = new GameStateManager();
     Gdx.gl.glClearColor(0, 0, 0, 0);
-    gsm.push(new MenuState(gsm, null));
-    //gsm.push(new SetPlayerState(gsm));
+    //gsm.push(new MenuState(gsm, null));
+    gsm.push(new SetPlayerState(gsm));
   }
 
   @Override
